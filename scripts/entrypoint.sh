@@ -97,7 +97,12 @@ EOF
   chown -R "${USERNAME}:${USERNAME}" "${USER_HOME}" /workspace
 }
 
+ensure_runtime_dirs() {
+  mkdir -p /run/sshd /var/run/sshd
+}
+
 ensure_host_keys
+ensure_runtime_dirs
 ensure_home_state
 
 exec "$@"
