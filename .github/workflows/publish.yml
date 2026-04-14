@@ -2,6 +2,8 @@ name: Publish Image
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 1"
   push:
     branches:
       - main
@@ -13,6 +15,7 @@ permissions:
   packages: write
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository_owner }}/nas-devbox-image
 

@@ -1,9 +1,7 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG USERNAME=dev
-ARG USER_UID=1000
-ARG USER_GID=1000
+ARG USERNAME=ubuntu
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -34,8 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y --bin-dir /usr/local/bin
 
-RUN groupmod --new-name "${USERNAME}" ubuntu && \
-    usermod --login "${USERNAME}" --home "/home/${USERNAME}" --move-home --shell /usr/bin/zsh ubuntu && \
+RUN usermod --shell /usr/bin/zsh "${USERNAME}" && \
     mkdir -p /workspace /var/run/sshd /ssh-host-keys && \
     chown -R "${USERNAME}:${USERNAME}" /workspace /ssh-host-keys /home/${USERNAME} && \
     passwd -l "${USERNAME}"

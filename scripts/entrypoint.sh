@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-USERNAME="${USERNAME:-dev}"
+USERNAME="${USERNAME:-ubuntu}"
 USER_HOME="/home/${USERNAME}"
 SSH_KEY_STORE="${SSH_KEY_STORE:-/ssh-host-keys}"
 AUTHORIZED_KEYS_CONTENT="${AUTHORIZED_KEYS:-}"
