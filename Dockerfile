@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     procps \
     iproute2 \
     dnsutils \
+    bubblewrap \
     build-essential \
     locales && \
     rm -rf /var/lib/apt/lists/*
