@@ -34,47 +34,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y --bin-dir /usr/local/bin
 
-RUN if id ubuntu >/dev/null 2>&1 && [ "${USER_UID}" = "1000" ] && [ "${USER_GID}" = "1000" ]; then \
-        usermod -l "${USERNAME}" ubuntu && \
-        groupmod -n "${USERNAME}" ubuntu && \
-        usermod -d "/home/${USERNAME}" -m "${USERNAME}" && \
-        chsh -s /usr/bin/zsh "${USERNAME}"; \
-    elif ! id "${USERNAME}" >/dev/null 2>&1; then \
-        groupadd --gid "${USER_GID}" "${USERNAME}" && \
-        useradd --uid "${USER_UID}" --gid "${USER_GID}" --create-home --shell /usr/bin/zsh "${USERNAME}"; \
-    fi && \
-    mkdir -p /workspace /var/run/sshd /ssh-host-keys /home/${USERNAME}/.config && \
+RUN groupadd --gid "${USER_GID}" "${USERNAME}" && \
+    useradd --uid "${USER_UID}" --gid "${USER_GID}" --create-home --shell /usr/bin/zsh "${USERNAME}" && \
+    mkdir -p /workspace /var/run/sshd /ssh-host-keys && \
     chown -R "${USERNAME}:${USERNAME}" /workspace /ssh-host-keys /home/${USERNAME} && \
-    passwd -l "${USERNAME}" && \
-    find /etc/sudoers.d -maxdepth 1 -type f \( -name '*ubuntu*' -o -name '*vscode*' -o -name '90-cloud-init-users' \) -delete || true && \
-    gpasswd -d "${USERNAME}" sudo || true
+    passwd -l "${USERNAME}"
 
 RUN npm install -g @openai/codex @anthropic-ai/claude-code && \
     npm cache clean --force && \
     if command -v batcat >/dev/null 2>&1 && ! command -v bat >/dev/null 2>&1; then ln -s /usr/bin/batcat /usr/local/bin/bat; fi
 
 COPY scripts/entrypoint.sh /usr/local/bin/devbox-entrypoint
+COPY ssh/10-devbox.conf /etc/ssh/sshd_config.d/10-devbox.conf
 
-RUN chmod 755 /usr/local/bin/devbox-entrypoint && \
-    mkdir -p /etc/ssh/sshd_config.d && \
-    printf '%s\n' \
-        'Port 2222' \
-        'Protocol 2' \
-        'PermitRootLogin no' \
-        'PasswordAuthentication no' \
-        'KbdInteractiveAuthentication no' \
-        'ChallengeResponseAuthentication no' \
-        'PubkeyAuthentication yes' \
-        "AllowUsers ${USERNAME}" \
-        'UsePAM yes' \
-        'X11Forwarding no' \
-        'AllowTcpForwarding yes' \
-        'AllowAgentForwarding yes' \
-        'PrintMotd no' \
-        'ClientAliveInterval 120' \
-        'ClientAliveCountMax 2' \
-        'AuthorizedKeysFile .ssh/authorized_keys' \
-        > /etc/ssh/sshd_config.d/10-devbox.conf
+RUN chmod 755 /usr/local/bin/devbox-entrypoint
 
 ENV USERNAME=${USERNAME} \
     USER=${USERNAME} \
