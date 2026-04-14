@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG USERNAME=ubuntu
+ARG USERNAME=vscode
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

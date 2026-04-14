@@ -8,7 +8,7 @@ Ubuntu-based remote development container for OMV or any Docker host, with direc
 ## What this image includes
 
 - `openssh-server` on port `2222`
-- non-root login user: `ubuntu`
+- non-root login user: `vscode`
 - `zsh` as the login shell
 - `starship` prompt auto-enabled for SSH logins
 - `git`, `tmux`, `gh`, `ripgrep`, `fzf`, `bat`, `eza`, `zoxide`, `jq`
@@ -18,17 +18,17 @@ Ubuntu-based remote development container for OMV or any Docker host, with direc
 
 ## Why Claude Code uses npm here
 
-Anthropic currently recommends the native Linux installer, but that installs `claude` into `~/.local/bin`. Because this image intentionally persists all of `/home/ubuntu`, a fresh bind mount could hide that binary. This image uses the npm package instead so `claude` stays globally available from the image layer while your personal Claude config still persists in `/home/ubuntu`.
+Anthropic currently recommends the native Linux installer, but that installs `claude` into `~/.local/bin`. Because this image intentionally persists all of `/home/vscode`, a fresh bind mount could hide that binary. This image uses the npm package instead so `claude` stays globally available from the image layer while your personal Claude config still persists in `/home/vscode`.
 
 ## Persistent paths
 
 Mount these paths on the host:
 
-- `/home/ubuntu`
+- `/home/vscode`
 - `/workspace`
 - `/ssh-host-keys`
 
-Persisting `/home/ubuntu` covers:
+Persisting `/home/vscode` covers:
 
 - `~/.ssh`
 - `~/.gitconfig`
@@ -79,5 +79,5 @@ docker build -t nas-devbox-image:local .
 
 ## Notes
 
-- The container process starts as `root` so `sshd` can launch, but interactive logins go to the unprivileged `ubuntu` user.
+- The container process starts as `root` so `sshd` can launch, but interactive logins go to the unprivileged `vscode` user.
 - `sudo` is intentionally not configured for the remote user.
