@@ -34,8 +34,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y --bin-dir /usr/local/bin
 
-RUN groupadd --gid "${USER_GID}" "${USERNAME}" && \
-    useradd --uid "${USER_UID}" --gid "${USER_GID}" --create-home --shell /usr/bin/zsh "${USERNAME}" && \
+RUN groupmod --new-name "${USERNAME}" ubuntu && \
+    usermod --login "${USERNAME}" --home "/home/${USERNAME}" --move-home --shell /usr/bin/zsh ubuntu && \
     mkdir -p /workspace /var/run/sshd /ssh-host-keys && \
     chown -R "${USERNAME}:${USERNAME}" /workspace /ssh-host-keys /home/${USERNAME} && \
     passwd -l "${USERNAME}"
