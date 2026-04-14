@@ -1,5 +1,8 @@
 # NAS Devbox Image
 
+This repository builds my slightly customized DevContainer for remote development. The container will runs on my NAS and I connect via SSH from my iPhone. DevContainers are chosen for convenience and extensability.
+The Dockerfile is hardened using [OWASP recommendations](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html).
+
 Ubuntu-based remote development container for OMV or any Docker host, with direct SSH access and a persistent home directory.
 
 ## What this image includes
