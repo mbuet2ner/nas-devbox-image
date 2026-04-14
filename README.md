@@ -66,9 +66,7 @@ To use it:
 1. Create a new GitHub repository and push this folder to it.
 2. Ensure GitHub Actions is enabled for the repository.
 3. Push to `main` or create a tag like `v1.0.0`.
-4. Pull the resulting image from GHCR in OMV.
-
-The workflow uses the built-in `GITHUB_TOKEN`, so you do not need a separate registry token for publishing to the same repository's GHCR package.
+4. Pull the resulting image from GHCR
 
 ## Local build
 
@@ -76,20 +74,7 @@ The workflow uses the built-in `GITHUB_TOKEN`, so you do not need a separate reg
 docker build -t nas-devbox-image:local .
 ```
 
-## Deploy on OMV
-
-1. Copy `docker-compose.example.yml` into your OMV stack.
-2. Replace `ghcr.io/YOUR_GITHUB_USERNAME/nas-devbox-image:latest` with your published image.
-3. Replace the host volume paths with your OMV data paths.
-4. Add your public key to `AUTHORIZED_KEYS` for the first start, or place it into the mounted home directory under `/home/dev/.ssh/authorized_keys`.
-5. Start the stack and connect with:
-
-```bash
-ssh -p 2222 dev@YOUR_NAS_HOST
-```
-
 ## Notes
 
 - The container process starts as `root` so `sshd` can launch, but interactive logins go to the unprivileged `dev` user.
 - `sudo` is intentionally not configured for `dev`.
-- If you later want browser-based iPad access, add `code-server` as a separate service instead of loosening this container.
