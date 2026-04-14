@@ -12,6 +12,7 @@ Ubuntu-based remote development container for OMV or any Docker host, with direc
 - `zsh` as the login shell
 - `starship` prompt auto-enabled for SSH logins
 - `git`, `tmux`, `gh`, `ripgrep`, `fzf`, `bat`, `eza`, `zoxide`, `jq`
+- `uv` for Python tooling
 - `nodejs` and `npm`
 - `codex` via `@openai/codex`
 - `claude` via `@anthropic-ai/claude-code`

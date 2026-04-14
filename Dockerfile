@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y --bin-dir /usr/local/bin
+RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_UNMANAGED_INSTALL=/usr/local/bin sh
 
 RUN usermod --shell /usr/bin/zsh "${USERNAME}" && \
     mkdir -p /workspace /var/run/sshd /ssh-host-keys && \
