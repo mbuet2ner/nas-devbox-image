@@ -1,0 +1,95 @@
+# NAS Devbox Image
+
+Ubuntu-based remote development container for OMV or any Docker host, with direct SSH access and a persistent home directory.
+
+## What this image includes
+
+- `openssh-server` on port `2222`
+- non-root login user: `dev`
+- `zsh` as the login shell
+- `starship` prompt auto-enabled for SSH logins
+- `git`, `tmux`, `gh`, `ripgrep`, `fzf`, `bat`, `eza`, `zoxide`, `jq`
+- `nodejs` and `npm`
+- `codex` via `@openai/codex`
+- `claude` via `@anthropic-ai/claude-code`
+
+## Why Claude Code uses npm here
+
+Anthropic currently recommends the native Linux installer, but that installs `claude` into `~/.local/bin`. Because this image intentionally persists all of `/home/dev`, a fresh bind mount could hide that binary. This image uses the npm package instead so `claude` stays globally available from the image layer while your personal Claude config still persists in `/home/dev`.
+
+## Persistent paths
+
+Mount these paths on the host:
+
+- `/home/dev`
+- `/workspace`
+- `/ssh-host-keys`
+
+Persisting `/home/dev` covers:
+
+- `~/.ssh`
+- `~/.gitconfig`
+- `~/.config/gh`
+- `~/.claude`
+- Codex config under your home directory
+- `~/.zshrc`
+- `~/.config/starship.toml`
+- shell history
+
+Persisting `/ssh-host-keys` keeps the SSH server fingerprint stable across container recreation.
+
+## Security defaults
+
+- password SSH login disabled
+- root SSH login disabled
+- non-root remote login user
+- no Docker socket mount
+- `no-new-privileges:true`
+- only `NET_RAW` dropped by default to avoid breaking `sshd`
+
+## First-time SSH bootstrap
+
+You can set `AUTHORIZED_KEYS` in Compose on first boot to seed `~/.ssh/authorized_keys`. After that, the persisted home directory keeps your SSH config and keys.
+
+## Example Compose
+
+See [docker-compose.example.yml](./docker-compose.example.yml).
+
+The example binds SSH to `127.0.0.1:2222`. If you want LAN access, replace that with your NAS LAN IP or `2222:2222`.
+
+## Build and publish with GitHub Actions
+
+The workflow at `.github/workflows/publish.yml` publishes a multi-arch image to GHCR for `linux/amd64` and `linux/arm64`.
+
+To use it:
+
+1. Create a new GitHub repository and push this folder to it.
+2. Ensure GitHub Actions is enabled for the repository.
+3. Push to `main` or create a tag like `v1.0.0`.
+4. Pull the resulting image from GHCR in OMV.
+
+The workflow uses the built-in `GITHUB_TOKEN`, so you do not need a separate registry token for publishing to the same repository's GHCR package.
+
+## Local build
+
+```bash
+docker build -t nas-devbox-image:local .
+```
+
+## Deploy on OMV
+
+1. Copy `docker-compose.example.yml` into your OMV stack.
+2. Replace `ghcr.io/YOUR_GITHUB_USERNAME/nas-devbox-image:latest` with your published image.
+3. Replace the host volume paths with your OMV data paths.
+4. Add your public key to `AUTHORIZED_KEYS` for the first start, or place it into the mounted home directory under `/home/dev/.ssh/authorized_keys`.
+5. Start the stack and connect with:
+
+```bash
+ssh -p 2222 dev@YOUR_NAS_HOST
+```
+
+## Notes
+
+- The container process starts as `root` so `sshd` can launch, but interactive logins go to the unprivileged `dev` user.
+- `sudo` is intentionally not configured for `dev`.
+- If you later want browser-based iPad access, add `code-server` as a separate service instead of loosening this container.
