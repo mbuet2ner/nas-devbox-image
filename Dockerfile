@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gh \
     nodejs \
     npm \
-    starship \
     ripgrep \
     fzf \
     bat \
@@ -32,6 +31,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     locales && \
     rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y --bin-dir /usr/local/bin
 
 RUN if id ubuntu >/dev/null 2>&1 && [ "${USER_UID}" = "1000" ] && [ "${USER_GID}" = "1000" ]; then \
         usermod -l "${USERNAME}" ubuntu && \
