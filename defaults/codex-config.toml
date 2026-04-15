@@ -1,7 +1,5 @@
-[tui]
-# Only notify when Codex needs input
-notifications = ["approval-requested"]
-notification_method = "bel"
-
-# Codex finished -> ntfy
 notify = ["sh", "-c", "curl -fsS -H \"Title: Codex done\" -H \"Priority: default\" -H \"Tags: white_check_mark,robot\" -d \"Codex finished a turn\" http://ntfy/up-codex-done >/dev/null || true"]
+
+[tui]
+# Notify on completed Codex turns
+notifications = ["agent-turn-complete"]
