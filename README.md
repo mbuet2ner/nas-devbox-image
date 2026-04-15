@@ -42,7 +42,7 @@ Persisting `/home/vscode` covers:
 - `~/.config/starship.toml`
 - shell history
 
-If `~/.tmux.conf` or `~/.codex/config.toml` are missing on first boot, the container seeds them with the default `http://ntfy` notification setup. Existing older env-based ntfy config is migrated in place.
+If `~/.tmux.conf` or `~/.codex/config.toml` are missing on first boot, the container seeds them with the default `http://ntfy` notification setup.
 
 Persisting `/ssh-host-keys` keeps the SSH server fingerprint stable across container recreation.
 
