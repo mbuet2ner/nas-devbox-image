@@ -16,6 +16,7 @@ Ubuntu-based remote development container for OMV or any Docker host, with direc
 - `nodejs` and `npm`
 - `codex` via `@openai/codex`
 - `claude` via `@anthropic-ai/claude-code`
+- default tmux BEL and Codex notification wiring that publishes to `http://ntfy`
 
 ## Why Claude Code uses npm here
 
@@ -35,10 +36,13 @@ Persisting `/home/vscode` covers:
 - `~/.gitconfig`
 - `~/.config/gh`
 - `~/.claude`
+- `~/.tmux.conf`
 - Codex config under your home directory
 - `~/.zshrc`
 - `~/.config/starship.toml`
 - shell history
+
+If `~/.tmux.conf` or `~/.codex/config.toml` are missing on first boot, the container seeds them with the default `http://ntfy` notification setup.
 
 Persisting `/ssh-host-keys` keeps the SSH server fingerprint stable across container recreation.
 
