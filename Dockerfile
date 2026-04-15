@@ -49,8 +49,7 @@ COPY scripts/entrypoint.sh /usr/local/bin/devbox-entrypoint
 RUN chmod 755 /usr/local/bin/devbox-entrypoint
 COPY ssh/10-devbox.conf /etc/ssh/sshd_config.d/10-devbox.conf
 
-# This allows us to get notified when Codex is done or needs input
-COPY defaults/.tmux.conf /usr/local/share/devbox-defaults/.tmux.conf
+# Seed the default Codex completion notifier config
 COPY defaults/codex-config.toml /usr/local/share/devbox-defaults/.codex/config.toml
 
 # Keep runtime paths and shell defaults explicit.

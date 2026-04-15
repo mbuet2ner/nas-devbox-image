@@ -102,10 +102,7 @@ fi'
 success_symbol = "[>](bold green)"
 error_symbol = "[>](bold red)"'
 
-  # Seed Codex/tmux defaults:
-  # - tmux: basic bell settings only
-  # - codex: sends ntfy on completion via notify hook
-  copy_if_missing "${DEFAULTS_DIR}/.tmux.conf" "${USER_HOME}/.tmux.conf"
+  # Seed the default Codex notifier config
   copy_if_missing "${DEFAULTS_DIR}/.codex/config.toml" "${USER_HOME}/.codex/config.toml"
 
   # Fix permissions for SSH

@@ -36,13 +36,12 @@ Persisting `/home/vscode` covers:
 - `~/.gitconfig`
 - `~/.config/gh`
 - `~/.claude`
-- `~/.tmux.conf`
 - Codex config under your home directory
 - `~/.zshrc`
 - `~/.config/starship.toml`
 - shell history
 
-If `~/.tmux.conf` or `~/.codex/config.toml` are missing on first boot, the container seeds them with the validated defaults: basic tmux bell settings and a Codex completion notification to `http://ntfy`.
+If `~/.codex/config.toml` is missing on first boot, the container seeds it with the validated Codex completion notification to `http://ntfy`.
 
 Persisting `/ssh-host-keys` keeps the SSH server fingerprint stable across container recreation.
 
