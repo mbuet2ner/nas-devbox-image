@@ -16,7 +16,7 @@ Ubuntu-based remote development container for OMV or any Docker host, with direc
 - `nodejs` and `npm`
 - `codex` via `@openai/codex`
 - `claude` via `@anthropic-ai/claude-code`
-- scroll-friendly tmux defaults with mouse support and clipboard integration
+- scroll-friendly tmux defaults with mouse support, session titles, and clipboard integration
 - default Codex notification wiring that publishes to `http://ntfy`
 
 ## Why Claude Code uses npm here
@@ -43,7 +43,7 @@ Persisting `/home/vscode` covers:
 - `~/.config/starship.toml`
 - shell history
 
-If `~/.tmux.conf` or `~/.codex/config.toml` are missing on first boot, the container seeds them with minimal tmux scroll/clipboard defaults and the default Codex notification setup for `http://ntfy`.
+If `~/.tmux.conf` or `~/.codex/config.toml` are missing on first boot, the container seeds them with minimal tmux defaults for scrolling, session titles, clipboard integration, and the default Codex notification setup for `http://ntfy`.
 
 Persisting `/ssh-host-keys` keeps the SSH server fingerprint stable across container recreation.
 
